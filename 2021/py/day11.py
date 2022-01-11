@@ -1,6 +1,6 @@
 import helpers
 
-lines = helpers.list_from_file('inputs/day11')
+lines = helpers.list_from_file('2021/inputs/day11')
 grid = [[int(x) for x in line] for line in lines]
 count = 0
 size = len(grid) * len(grid[0])

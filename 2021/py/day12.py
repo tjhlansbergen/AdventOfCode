@@ -1,6 +1,6 @@
 import helpers
 
-lines = helpers.list_from_file('inputs/day12')
+lines = helpers.list_from_file('2021/inputs/day12')
 caves = {}
 
 def dict_add_or_append(dct, key, value):

@@ -1,6 +1,6 @@
 import helpers
 
-measurements = helpers.list_int_from_file('inputs/day1')
+measurements = helpers.list_int_from_file('2021/inputs/day1')
 
 # part one
 print(len([i for i in range(len(measurements)-1) if measurements[i] < measurements[i+1]]))

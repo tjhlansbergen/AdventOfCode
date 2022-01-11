@@ -1,6 +1,6 @@
 import helpers
 
-lines = helpers.list_from_file('inputs/day15test')
+lines = helpers.list_from_file('2021/inputs/day15test')
 grid = [[int(column) for column in row] for row in lines]
 
 # to (tuple(r,c))/length(int)

@@ -1,6 +1,6 @@
 import helpers
 
-blocks = helpers.split_file_on_blanklines('inputs/day13')
+blocks = helpers.split_file_on_blanklines('2021/inputs/day13')
 
 paper = [[int(line.split(',')[0]), int(line.split(',')[1])] for line in blocks[0].split('\n')]
 folds = [(line.replace('fold along ', '').split('=')[0], int(line.replace('fold along ', '').split('=')[1])) for line in blocks[1].split('\n')]

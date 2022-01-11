@@ -1,6 +1,6 @@
 import helpers
 
-grid = helpers.list_from_file('inputs\day3')
+grid = helpers.list_from_file('2021/inputs/day3')
 
 # rotate the grid (90* clockwise)
 rotated = list(zip(*reversed(grid)))

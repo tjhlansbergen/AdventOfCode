@@ -2,7 +2,7 @@ import helpers
 import math
 
 # read input and covert to int's on the go
-grid = [[int(c) for c in r] for r in helpers.list_from_file('inputs/day9')]  
+grid = [[int(c) for c in r] for r in helpers.list_from_file('2021/inputs/day9')]  
 
 width = len(grid[0])
 height = len(grid)

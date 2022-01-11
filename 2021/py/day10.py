@@ -1,7 +1,7 @@
 import helpers
 import statistics
 
-lines = helpers.list_from_file('inputs/day10')
+lines = helpers.list_from_file('2021/inputs/day10')
 
 pairs = {"(": ")","{": "}","[": "]","<": ">"}
 

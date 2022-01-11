@@ -1,6 +1,6 @@
 import helpers
 
-blocks = helpers.split_file_on_blanklines('inputs/day14')
+blocks = helpers.split_file_on_blanklines('2021/inputs/day14')
 polymer = blocks[0]
 insertions = {(i.split(' -> ')[0], i.split(' -> ')[1]) for i in blocks[1].split('\n')}
 

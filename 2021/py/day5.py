@@ -6,7 +6,7 @@ def dict_add_or_inc(dct, key):
     else:
         dct[key] = 1
 
-lines = helpers.list_from_file('inputs/day5')
+lines = helpers.list_from_file('2021/inputs/day5')
 segments = [[[int(coord) for coord in point.split(",")] for point in line.split(" -> ")] for line in lines]
 
 

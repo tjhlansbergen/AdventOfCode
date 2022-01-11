@@ -1,7 +1,7 @@
 import helpers
 from typing import List, Union
 
-input = helpers.split_file_on_blanklines('inputs/day4')
+input = helpers.split_file_on_blanklines('2021/inputs/day4')
 
 balls = [int(ball) for ball in input[0].split(",")]
 

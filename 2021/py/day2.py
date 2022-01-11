@@ -1,6 +1,6 @@
 import helpers
 
-lines = helpers.list_from_file('inputs\day2')
+lines = helpers.list_from_file('2021/inputs/day2')
 
 # part one
 h = 0

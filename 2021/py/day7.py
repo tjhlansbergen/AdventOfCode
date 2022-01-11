@@ -2,7 +2,7 @@ import helpers
 import statistics
 import math
 
-positions = helpers.split_int_file_on_comma('inputs/day7')
+positions = helpers.split_int_file_on_comma('2021/inputs/day7')
 positions.sort()
 
 def fuel(positions, test):

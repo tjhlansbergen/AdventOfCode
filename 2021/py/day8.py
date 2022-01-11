@@ -1,6 +1,6 @@
 import helpers
 
-rows = helpers.list_from_file('inputs/day8')
+rows = helpers.list_from_file('2021/inputs/day8')
 
 
 # part one

@@ -1,6 +1,6 @@
 import helpers
 
-ages = [int(age) for age in helpers.list_from_file('inputs/day6')[0].split(",")] 
+ages = [int(age) for age in helpers.list_from_file('2021/inputs/day6')[0].split(",")] 
 
 
 
