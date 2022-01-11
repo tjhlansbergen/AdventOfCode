@@ -1,7 +1,7 @@
 import helpers
 import sys
 
-lines = helpers.list_from_file('inputs/day2')
+lines = helpers.list_from_file('2020/inputs/day2')
 
 def long():
 

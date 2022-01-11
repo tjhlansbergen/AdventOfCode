@@ -2,7 +2,7 @@ import helpers
 from typing import List
 from typing import DefaultDict
 
-groups = helpers.split_file_on_blanklines('inputs/day6')
+groups = helpers.split_file_on_blanklines('2020/inputs/day6')
 
 # part one
 sum_of_counts = sum([len(set(group.replace('\n',''))) for group in groups])

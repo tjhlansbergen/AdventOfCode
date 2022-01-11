@@ -22,7 +22,7 @@ def find_seat(route: str) -> int:
     return int(seat)
 
 # part one
-routes = helpers.list_from_file('inputs/day5')
+routes = helpers.list_from_file('2020/inputs/day5')
 seats = [find_seat(route) for route in routes]
 print(max(seats))
 

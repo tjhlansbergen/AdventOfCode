@@ -1,6 +1,6 @@
 import helpers
 
-input = helpers.split_file_on_blanklines('inputs/day4')
+input = helpers.split_file_on_blanklines('2020/inputs/day4')
 passports = [block.replace('\n', ' ').split(' ') for block in input]
 
 def part_one(passports):

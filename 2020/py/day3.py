@@ -1,7 +1,7 @@
 import helpers
 import math
 
-lines = helpers.list_from_file('inputs/day3')
+lines = helpers.list_from_file('2020/inputs/day3')
 
 # python strings are indexable, that makes traversing the map easy
 

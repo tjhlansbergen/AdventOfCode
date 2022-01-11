@@ -44,7 +44,7 @@ def traverse_bags(bag: Bag, count: int) -> int:
     return count
 
 
-rules = helpers.list_from_file('inputs/day7')
+rules = helpers.list_from_file('2020/inputs/day7')
 bags = []
 for rule in rules:
     parse_rule(rule, bags)

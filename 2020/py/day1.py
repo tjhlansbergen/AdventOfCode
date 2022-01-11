@@ -1,7 +1,7 @@
 import helpers
 import sys
 
-lines = helpers.list_int_from_file('inputs/day1')
+lines = helpers.list_int_from_file('2020/inputs/day1')
 
 
 for i in range(len(lines)):
