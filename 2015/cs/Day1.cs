@@ -4,7 +4,7 @@ namespace Runner
     {
         internal static void Run()
         {
-            var lines = File.ReadAllLines("../../inputs/day1");
+            var lines = File.ReadAllLines("../inputs/day1");
             Console.WriteLine(lines[0]);
         }
     }
