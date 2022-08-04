@@ -2,6 +2,9 @@ namespace Runner
 {
     public class Day9
     {
+        private static int _finalCost = int.MaxValue;
+        private static readonly bool log = false;
+
         public class Node
         {
             public string Name { get; set; }
@@ -21,7 +24,7 @@ namespace Runner
             {
                 Node nodea = null, nodeb = null;
 
-                if(Nodes.Any(n => n.Name == a))
+                if (Nodes.Any(n => n.Name == a))
                 {
                     nodea = Nodes.Single(n => n.Name == a);
                 }
@@ -31,7 +34,7 @@ namespace Runner
                     Nodes.Add(nodea);
                 }
 
-                if(Nodes.Any(n => n.Name == b))
+                if (Nodes.Any(n => n.Name == b))
                 {
                     nodeb = Nodes.Single(n => n.Name == b);
                 }
@@ -48,20 +51,66 @@ namespace Runner
 
         internal static void Run()
         {
-            var lines = File.ReadAllLines("../inputs/day9test");
+            var lines = File.ReadAllLines("../inputs/day9");
 
             var nodes = new NodeList();
 
             foreach (var line in lines)
             {
                 var from = line.Split('=')[0].Split("to")[0].Trim();
-                var to =  line.Split('=')[0].Split("to")[1].Trim();
+                var to = line.Split('=')[0].Split("to")[1].Trim();
                 var distance = int.Parse(line.Split('=')[1]);
 
                 nodes.Add(from, to, distance);
             }
 
-            var test = nodes;
+            foreach (var node in nodes.Nodes)
+            {
+
+                var visited = new List<Node>();
+                Visit(node, visited, null, 0);
+                if (log) System.Console.WriteLine();
+
+            }
+
+            if (log) System.Console.WriteLine();
+            System.Console.WriteLine(_finalCost);
+        }
+
+        internal static void Visit(Node node, List<Node> visited, Node prevNode, int cost)
+        {
+            if (log) System.Console.Write($"{node.Name} - ");
+
+            // mark as visited
+            visited.Add(node);
+
+
+
+            var nextNode = node.Distances.Where(d => !visited.Contains(d.Key)).OrderBy(d => d.Value).FirstOrDefault();
+
+            if(!nextNode.Equals(default(KeyValuePair<Node,int>)))
+            {
+                    Visit(nextNode.Key, visited, node, cost + nextNode.Value);
+            }
+    
+            if (prevNode == null)
+            {
+                if (log) System.Console.Write($"{node.Name}! - ");
+            }
+
+
+            if (!node.Distances.Keys.Where(d => !visited.Contains(d)).Any())
+            {
+
+                visited.Remove(node);
+                visited.Remove(prevNode);
+
+                if (log) System.Console.WriteLine(cost);
+                if (cost < _finalCost) _finalCost = cost;
+                cost = 0;
+            }
+
+
         }
     }
 }
