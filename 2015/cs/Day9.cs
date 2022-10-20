@@ -2,8 +2,8 @@ namespace Runner
 {
     public class Day9
     {
-        private static int _finalCost = int.MaxValue;
-        private static readonly bool log = false;
+        private static int _finalCost = 0;
+        private static readonly bool log = true;
 
         public class Node
         {
@@ -86,7 +86,7 @@ namespace Runner
 
 
 
-            var nextNode = node.Distances.Where(d => !visited.Contains(d.Key)).OrderBy(d => d.Value).FirstOrDefault();
+            var nextNode = node.Distances.Where(d => !visited.Contains(d.Key)).OrderByDescending(d => d.Value).FirstOrDefault();
 
             if(!nextNode.Equals(default(KeyValuePair<Node,int>)))
             {
@@ -106,7 +106,7 @@ namespace Runner
                 visited.Remove(prevNode);
 
                 if (log) System.Console.WriteLine(cost);
-                if (cost < _finalCost) _finalCost = cost;
+                if (cost > _finalCost) _finalCost = cost;
                 cost = 0;
             }
 
