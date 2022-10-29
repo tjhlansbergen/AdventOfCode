@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace AocRunner;
 
 public class Day2
