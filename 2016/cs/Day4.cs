@@ -40,7 +40,7 @@ public class Day4
                 if (string.Concat(decodedChars).Contains("northpole object"))
                 {
                     System.Console.WriteLine($"Part 2: {sector}");
-                    break;
+                    //break;
                 }
             }
         }
