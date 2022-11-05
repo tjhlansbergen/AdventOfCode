@@ -10,7 +10,7 @@ public class Day7
              .Count(parts => parts.Any(p => ContainsAbba(p.Key) && !p.Value)
                     && !parts.Any(p => ContainsAbba(p.Key) && p.Value));
 
-        System.Console.WriteLine($"Part 1: {one}");
+        System.Console.WriteLine($"Part one: {one}");
 
         var two = lines.Select(l => Parse(l))
             .Where(parts => parts.Any(p => !p.Value && ABAs(p.Key, false).Any()))
