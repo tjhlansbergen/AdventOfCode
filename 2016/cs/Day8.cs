@@ -6,16 +6,31 @@ public class Day8
     {
         var display = new Display();
         display.Print();
-        System.Console.ReadLine();
-        display.Rect(10, 3);
-        display.Print();
-        Console.ReadLine();
-
-        while (true)
+        
+        foreach (var line in lines)
         {
-            display.RotateColumn(1, 1);
+            var parts = line.Replace("x=", "").Replace("y=", "").Split(' ');
+
+            if (parts[0] == "rect")
+            {
+                var dimensions = parts[1].Split('x').Select(d => int.Parse(d)).ToArray();
+                display.Rect(dimensions[0], dimensions[1]);
+            }
+            else
+            {
+                if(parts[1] == "row")
+                {
+                    display.RotateRow(int.Parse(parts[2]), int.Parse(parts[4]));
+                }
+                else
+                {
+                    display.RotateColumn(int.Parse(parts[2]), int.Parse(parts[4]));
+                }
+            }
+
             display.Print();
-            System.Console.ReadLine();
+            Thread.Sleep(100);
+            //System.Console.ReadLine();
         }
     }
 
@@ -37,33 +52,20 @@ public class Day8
         }
 
         public void RotateRow(int row, int by) => _rotate(row, by, true);
-        public void RotateColumn(int row, int by) => _rotate(row, by, false);
+        public void RotateColumn(int column, int by) => _rotate(column, by, false);
         
         private void _rotate(int which, int by, bool row)
         {
             by = (row) ? by % _width : by % _height;
             int length = (row) ? _width : _height;
 
-            bool turnover = (row) ? _grid[length -1, which] : _grid[which, length -1];
+            var gridCopy = (bool[,])_grid.Clone();
 
-            for (int i = length - 1; i > 0; i--)
+            for (int i = 0; i < length; i++)
             {
-                if (row)
-                {
-                    
-                    _grid[i, which] = _grid[i - by > -1 ? i - by : _width - by + i, which];
-                    
-                }
-                else
-                {
-                    
-                    _grid[which, i] = _grid[which, i - by > -1 ? i - by : _height - by + i];
-            
-                }
-
+                if (row) { _grid[i, which] = gridCopy[i - by > -1 ? i - by : _width - by + i, which]; }
+                else { _grid[which, i] = gridCopy[which, i - by > -1 ? i - by : _height - by + i]; }
             }
-
-            if (row) { turnover = _grid[which,0]; } else { _grid[which,0] = turnover; }
         }
 
         public void Print()
@@ -92,6 +94,7 @@ public class Day8
             for (int i = 0; i < _width + 2; i++) { System.Console.Write("+"); }
             System.Console.WriteLine();
             System.Console.WriteLine();
+            System.Console.WriteLine(_grid.Cast<bool>().Count(p => p == true));
         }
     }
 }
