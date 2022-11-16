@@ -68,13 +68,45 @@ namespace Runner
             {
 
                 var visited = new List<Node>();
-                Visit(node, visited, null, 0);
+                Visitt(node, visited, 0);
                 if (log) System.Console.WriteLine();
 
             }
 
             if (log) System.Console.WriteLine();
             System.Console.WriteLine(_finalCost);
+        }
+
+        internal static void Visitt(Node node, List<Node> visited, int cost)
+        {
+
+
+            // mark as visited
+            visited.Add(node);
+
+            // get remaining unvisited nodes for this branch
+            var toVisit = node.Distances.Where(n => !visited.Contains(n.Key));
+
+            if (toVisit.Any())
+            {
+                foreach (var next in toVisit)
+                {
+                    if (log) System.Console.Write($"{node.Name} - ");
+                    Visitt(next.Key, visited, cost + next.Value);
+                }
+            }
+            else
+            {
+                // reached end of branch
+                if (log) System.Console.Write($"{node.Name} - ");
+                if (log) System.Console.Write(cost);
+                if (log) System.Console.WriteLine();
+
+                if (cost > _finalCost) _finalCost = cost;
+            }
+
+
+            visited.Remove(node);
         }
 
         internal static void Visit(Node node, List<Node> visited, Node prevNode, int cost)
@@ -88,11 +120,11 @@ namespace Runner
 
             var nextNode = node.Distances.Where(d => !visited.Contains(d.Key)).OrderByDescending(d => d.Value).FirstOrDefault();
 
-            if(!nextNode.Equals(default(KeyValuePair<Node,int>)))
+            if (!nextNode.Equals(default(KeyValuePair<Node, int>)))
             {
-                    Visit(nextNode.Key, visited, node, cost + nextNode.Value);
+                Visit(nextNode.Key, visited, node, cost + nextNode.Value);
             }
-    
+
             if (prevNode == null)
             {
                 if (log) System.Console.Write($"{node.Name}! - ");
