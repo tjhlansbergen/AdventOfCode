@@ -7,7 +7,7 @@ public class Day14
         var lines = File.ReadAllLines("../inputs/day14");
 
         var part1 = lines.Select(l => l.Split(' '))
-                            .Select(s => Calc(int.Parse(s[3]), int.Parse(s[6]), int.Parse(s[13]), 2503))
+                            .Select(s => Calc(P(s[3]), P(s[6]), P(s[13]), 2503))
                             .Max();
 
         System.Console.WriteLine($"Part 1: {part1}");
@@ -18,7 +18,7 @@ public class Day14
 
         for (int i = 1; i <= 2503; i++)
         {
-            var winners = splitLines.Select(s => new { Score = Calc(int.Parse(s[3]), int.Parse(s[6]), int.Parse(s[13]), i), Name = s[0] })
+            var winners = splitLines.Select(s => new { Score = Calc(P(s[3]), P(s[6]), P(s[13]), i), Name = s[0] })
                     .GroupBy(s => s.Score)
                     .OrderByDescending(gr => gr.Key)    // where key is the score
                     .First()
@@ -36,6 +36,11 @@ public class Day14
             return (duration % (fly + rest) <= fly) ?
                 ((duration / (fly + rest)) * fly * speed) + ((duration % (fly + rest)) * speed) :
                 ((duration / (fly + rest)) * fly * speed) + (fly * speed);
+        }
+
+        int P(string s)
+        {
+            return int.Parse(s);
         }
     }
 }
