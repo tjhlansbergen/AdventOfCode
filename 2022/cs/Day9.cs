@@ -45,7 +45,7 @@ public class Day9
     {
         public record Visit()
         {
-            public Tuple<int, int> Position { get; set; }
+            public Tuple<int, int> Position { get; set; } = Tuple.Create(0,0);
             public bool Stayed { get; set; }
         }
 
