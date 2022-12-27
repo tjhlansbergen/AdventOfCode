@@ -20,25 +20,11 @@ public class Day15
         public int Y { get; private set; }
         public int Span { get; private set; }
 
-        //public List<Tuple<int, int>> Shadow { get; private set; } = new List<Tuple<int, int>>();
-
         public Sensor(int x, int y, Beacon beacon)
         {
             X = x;
             Y = y;
             Span = Math.Abs(X - beacon.X) + Math.Abs(Y - beacon.Y);
-
-            // int r = Span;
-            // for (int yy = Y - Span; yy <= Y + Span; yy++)
-            // {
-            //     for (int xx = X - Span + r; xx <= X + Span - r; xx++)
-            //     {
-            //         Shadow.Add(Tuple.Create(xx,yy));
-            //     }
-
-            //     if (yy < Y) r--;
-            //     else r++;
-            // }
         }
 
         public bool Blocks(int x, int y, out int skip)
@@ -53,7 +39,6 @@ public class Day15
 
             return false;
         }
-
     }
 
     public static void Run(string input, string[] lines)
