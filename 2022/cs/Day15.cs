@@ -41,7 +41,18 @@ public class Day15
             // }
         }
 
-        public bool Blocks(int x, int y) => Math.Abs(X - x) + Math.Abs(Y - y) <= Span;
+        public bool Blocks(int x, int y, out int skip)
+        {
+            skip = 0;
+            var yy = Math.Abs(Y - y);
+            if (Math.Abs(X - x) + yy <= Span)
+            {
+                skip = X + Span - yy - x;
+                return true;
+            }
+
+            return false;
+        }
 
     }
 
@@ -73,7 +84,7 @@ public class Day15
             {
                 continue;
             }
-            if (sensors.Any(s => s.Blocks(x,y)))
+            if (sensors.Any(s => s.Blocks(x,y, out _)))
             {
                 count++;
             }
@@ -81,22 +92,32 @@ public class Day15
 
         System.Console.WriteLine($"Part 1: {count}");
 
-        // for (int j = 0; j <= 4000000; j++)
-        // {
-        //     for (int i = 0; i <= 4000000; i++)
-        //     {
-        //         if (beacons.Any(b => b.X == i && b.Y == j))
-        //         {
-        //             continue;
-        //         }
-        //         if (sensors.Any(s => s.Blocks(i, j)))
-        //         {
-        //             continue;
-        //         }
+        var brk = false;
+        long part2 = 0;
 
-        //         System.Console.WriteLine($"x: {i}, y: {j}, {(i*4000000)+j}");
-        //         break;
-        //     }
-        // }
+        for (int j = 0; j <= 4000000; j++)
+        {
+            for (int i = 0; i <= 4000000; i++)
+            {
+                if (beacons.Any(b => b.X == i && b.Y == j))
+                {
+                    continue;
+                }
+                int skip = 0;
+                if (sensors.Any(s => s.Blocks(i, j, out skip)))
+                {
+                    i+=skip;
+                    continue;
+                }
+
+                part2 = ((long)i * 4000000) + j;
+                brk = true;
+                break;
+            }
+
+            if (brk) break;
+        }
+
+        System.Console.WriteLine($"Part 2: {part2}");
     }
 }
