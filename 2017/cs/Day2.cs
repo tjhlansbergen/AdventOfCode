@@ -16,7 +16,11 @@ public class Day2
             {
                 for (int j = i + 1; j < line.Count(); j++)
                 {
-                    if (line[i] % line[j] == 0) lineResult.Add(line[i] / line[j]);
+                    if (line[i] % line[j] == 0) 
+                    {
+                        lineResult.Add(line[i] / line[j]);
+                        break;
+                    }
                 }
             }
         }
