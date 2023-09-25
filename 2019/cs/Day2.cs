@@ -6,13 +6,30 @@ public class Day2
 {
     public static void Run(string input, string[] lines)
     {
-        var intcode = PrepInput(input);
+        // part 1
+        var intcode = PrepInput(input, 12, 2);
         var result = Process(intcode);
 
-        System.Console.WriteLine(string.Join(',', result));
+        System.Console.WriteLine($"Part 1: {result}");
+
+        // part 2
+        for (int v = 0; v <= 99; v++)
+        {
+            for (int n = 0; n <= 99; n++)
+            {
+                intcode = PrepInput(input, n, v);
+                result = Process(intcode);
+
+                if (result == 19690720)
+                {
+                    System.Console.WriteLine($"Part 2: {100 * n + v}");
+                    Environment.Exit(0);
+                }
+            }
+        }
     }
 
-    public static List<int> Process(List<int> intcode)
+    public static int Process(List<int> intcode)
     {
         var position = 0;
         var result = new List<int>(intcode);
@@ -28,14 +45,14 @@ public class Day2
             position += 4;
         }
 
-        return result;
+        return result[0];
     }
 
-    public static List<int> PrepInput(string input)
+    public static List<int> PrepInput(string input, int noun, int verb)
     {
         var l = input.Split(',').Select(c => int.Parse(c)).ToList();
-        l[1] = 12;
-        l[2] = 2;
+        l[1] = noun;
+        l[2] = verb;
         return l;
     }
 }
