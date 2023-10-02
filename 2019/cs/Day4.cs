@@ -23,22 +23,22 @@ public class Day4
 
         for (int i = 0; i < 5; i++)
         {
-            if (str[i] > str[i+1]) return false;
+            if (str[i] > str[i + 1]) return false;
 
             if (two)
             {
-                if (str[i] == str[i+1] &&
-                    (i == 0 || str[i] != str[i-1]) &&
-                    (i == 4 || str[i] != str[i+2])) 
+                if (str[i] == str[i + 1] &&
+                    (i == 0 || str[i] != str[i - 1]) &&
+                    (i == 4 || str[i] != str[i + 2]))
                 {
                     adjacent = true;
                 }
             }
             else
             {
-                if (str[i] == str[i+1]) adjacent = true;    
+                if (str[i] == str[i + 1]) adjacent = true;
             }
-            
+
         }
 
         return adjacent;
