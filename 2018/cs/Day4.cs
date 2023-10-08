@@ -4,48 +4,69 @@ public class Day4
 {
     public class Shift
     {
-        public int Id { get; set; }
-        public Dictionary<int, int> Hours { get; set; }
+        public int Guard { get; set; }
+        public string? Date { get; set; } = null;
+        public List<int> Minutes = new ();
 
-        public Guard(int id)
+        public Shift(int guard)
         {
-            Id = id;
-            Hours = new Dictionary<int, int>();
-            for (int i = 0; i < 60; i++) Hours[i] = 0;
+            Guard = guard;
         }
     }
 
     public static void Run(string input, string[] lines)
     {
         var ordered = lines.OrderBy(l => l);
-        var guards = new List<Guard>();
-        Guard? currentGuard = null;
+        var shifts = ParseShifts(ordered);
 
-        foreach (var line in ordered)
+        //part 1
+        var sleepyestGuard = shifts.GroupBy(s => s.Guard)
+                                .MaxBy(gr => gr.Sum(gr => gr.Minutes.Count))?
+                                .Key;
+
+        var sleepyestMinute = Enumerable.Range(0, 59)
+                                        .Select(m => new {m, c = shifts.Count(s => s.Guard == sleepyestGuard && s.Minutes.Contains(m))})
+                                        .MaxBy(mc => mc.c)?
+                                        .m;
+        
+        System.Console.WriteLine($"Part 1: {sleepyestGuard * sleepyestMinute}");
+    }
+
+    private static List<Shift> ParseShifts(IEnumerable<string> lines)
+    {
+        var result = new List<Shift>();
+
+        var currentGuard = -1;
+        var sleeps = -1;
+
+        foreach (var line in lines)
         {
             var s = line.Split(']');
-            if (s[1].StartsWith(" Guard")) ParseGuard(line);
-            else ParseSleep(line);
-        }
-
-        void ParseGuard(string line)
-        {
-            var id = int.Parse(line.Split('#')[1].Split(" begins")[0]);
-            if (guards.Select(g => g.Id).Contains(id)) 
+            if (s[1].StartsWith(" Guard"))
             {
-                currentGuard = guards.Single(g => g.Id == id);
+                currentGuard = int.Parse(s[1].Split('#')[1].Split(' ')[0]);
+                result.Add(new Shift(currentGuard));
             }
             else
             {
-                currentGuard = new Guard(id); 
-                guards.Add(currentGuard);
-            } 
+                // set date if needed
+                if (result.Last().Date == null)
+                {
+                    result.Last().Date = s[0].Replace('[', ' ').Trim().Split(' ')[0];
+                }
+
+                if (s[1] == " falls asleep")
+                {
+                    sleeps = int.Parse(s[0].Split(':')[1]);
+                }
+                else
+                {
+                    int wakes = int.Parse(s[0].Split(':')[1]);
+                    result.Last().Minutes.AddRange(Enumerable.Range(sleeps, wakes - sleeps));
+                }
+            }
         }
 
-        void ParseSleep(string line)
-        {
-            
-        }
-
+        return result;
     }
 }
