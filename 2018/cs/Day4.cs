@@ -30,6 +30,16 @@ public class Day4
                                         .m;
         
         System.Console.WriteLine($"Part 1: {sleepyestGuard * sleepyestMinute}");
+
+        var part2 = shifts.GroupBy(s => s.Guard)
+                        .Select(gr => new {gr.Key, mc = Enumerable.Range(0, 59)
+                                        .Select(m => new {m, c = shifts.Count(s => s.Guard == gr.Key && s.Minutes.Contains(m))})
+                                        .MaxBy(mc => mc.c)})
+                        .MaxBy(g => g.mc?.c);
+
+        System.Console.WriteLine($"Part 2: {part2?.Key * part2?.mc?.m}");
+                        
+                        
     }
 
     private static List<Shift> ParseShifts(IEnumerable<string> lines)
