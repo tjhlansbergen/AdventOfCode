@@ -2,7 +2,7 @@ namespace AocRunner;
 
 public class Day4
 {
-    public record Guard
+    public class Shift
     {
         public int Id { get; set; }
         public Dictionary<int, int> Hours { get; set; }
