@@ -35,6 +35,7 @@ public class Day6
         };
 
         var grid = new Dictionary<Coord, Coord?>();
+        var countPt2 = 0;
 
         for (int y = bounds.Top; y <= bounds.Bottom; y++)
         {
@@ -43,7 +44,11 @@ public class Day6
             for (int x = bounds.Left; x <= bounds.Right; x++)
             {
                 var manhattans = coords.Select(c => new { c, Manhattan = Manhattan(c, x, y) });
+
+                if (manhattans.Select(m => m.Manhattan).Sum() < 10000) countPt2++;
+
                 var closests = manhattans.Where(m => m.Manhattan == manhattans.Min(m => m.Manhattan));
+
 
                 if (closests.Count() == 1)
                     grid.Add(new Coord { X = x, Y = y }, closests.Single().c);
@@ -65,6 +70,8 @@ public class Day6
             .Max();
 
         System.Console.WriteLine($"Part 1: {max}");
+        System.Console.WriteLine($"Part 2: {countPt2}");
+        
 
         static int Manhattan(Coord c, int x, int y)
         {
