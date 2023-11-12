@@ -7,6 +7,18 @@ public class Day7
         public int? Weight { get; set; }
         public Prog? Parent { get; set; }
         public List<Prog> Children { get; set; } = new List<Prog>();
+
+        private int? combinedWeight = null;
+
+        public int CombinedWeight()
+        {
+            if (combinedWeight == null)
+            {
+                combinedWeight = Children.Select(c => c.CombinedWeight()).Sum() + Weight!.Value;
+            }
+            
+            return combinedWeight.Value;
+        }
     }
 
     public static void Run(string input, string[] lines)
@@ -14,6 +26,18 @@ public class Day7
         var progs = Parse(lines);
 
         System.Console.WriteLine($"Part 1: {progs.Single(p => p.Value.Parent == null).Key}");
+
+        var discs = progs.Values.Where(p => p.Children.Select(c => c.CombinedWeight()).Distinct().Count() > 1);
+        
+        // this is magic, we are getting a whole branch of faulty disc and are looking for the one furthest
+        // from the root ('fixing' that fixes the whole branch)
+        // this one can be found because it's children will not be any of the others
+        var disc = discs.Single(d => !d.Children.Any(c => discs.Contains(c)));
+        var tower = disc.Children.GroupBy(c => c.CombinedWeight()).Where(gr => gr.Count() == 1).Single();
+        var diff = tower.Key - disc.Children.First(c => c.CombinedWeight() != tower.Key).CombinedWeight();
+        var part2 = tower.Select(t => t).Single().Weight - diff;
+
+        System.Console.WriteLine($"Part 2: {part2}");
     }
 
     public static Dictionary<string, Prog> Parse(string[] lines)
