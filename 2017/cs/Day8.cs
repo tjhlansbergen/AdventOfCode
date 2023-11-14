@@ -7,13 +7,13 @@ public class Day8
 {
     public class Instruction
     {
-        public string OperationRegister { get; set; }
+        public string? OperationRegister { get; set; }
         public int OperationAmount { get; set; }
-        public Func<int,int,int> Operation { get; set; }
+        public Func<int,int,int>? Operation { get; set; }
         
-        public string ConditionRegister { get; set; }
+        public string? ConditionRegister { get; set; }
         public int ConditionAmount { get; set; }
-        public Func<int,int,bool> Condition { get; set; }
+        public Func<int,int,bool>? Condition { get; set; }
 
     }
 
@@ -25,12 +25,12 @@ public class Day8
 
         foreach (var i in instructions)
         {
-            if (!register.ContainsKey(i.OperationRegister)) register.Add(i.OperationRegister, 0);
-            if (!register.ContainsKey(i.ConditionRegister)) register.Add(i.ConditionRegister, 0);
+            if (!register.ContainsKey(i.OperationRegister!)) register.Add(i.OperationRegister!, 0);
+            if (!register.ContainsKey(i.ConditionRegister!)) register.Add(i.ConditionRegister!, 0);
 
-            if (i.Condition(register[i.ConditionRegister], i.ConditionAmount))
+            if (i.Condition!(register[i.ConditionRegister!], i.ConditionAmount))
             {
-                register[i.OperationRegister] = i.Operation(register[i.OperationRegister], i.OperationAmount);
+                register[i.OperationRegister!] = i.Operation!(register[i.OperationRegister!], i.OperationAmount);
                 max = Math.Max(register.Values.Max(), max);
             }
         }
