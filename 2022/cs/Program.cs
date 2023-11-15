@@ -8,51 +8,88 @@ internal class Program
     {
         int day;
 
-        if (args.Length < 1 || !int.TryParse(args[0], out day))
+        if (args.Length == 2 && args[0] == "prep" && int.TryParse(args[1], out day))
         {
-
-            Console.Write("Day:? ");
-
-            if (!int.TryParse(Console.ReadLine(), out day))
-            {
-                System.Console.WriteLine("That is not a day");
-                return;
-            }
-        }
-
-        var inputsFile = $"../inputs/day{day}";
-        if (!File.Exists(inputsFile))
-        {
-            Console.WriteLine("Input file for day {day} not found (at {inputsFile})");
+            PrepDay(day);
             return;
         }
+
+        if (args.Length == 1 && int.TryParse(args[0], out day))
+        {
+            RunDay(day);
+            return;
+        }
+
+        Console.Write("Day:? ");
+        if (int.TryParse(Console.ReadLine(), out day))
+        {
+            RunDay(day);
+            return;
+        }
+
+        System.Console.WriteLine("Don't know what to do, bye");
+    }
+
+    private static bool RunDay(int day)
+    {
+        // get input
+        var inputsFile = $"../inputs/day{day}";
+        if (!File.Exists(inputsFile)) return LogAndExit($"Input file for day {day} not found (at {inputsFile})");
 
         var input = File.ReadAllText(inputsFile);
         var lines = File.ReadAllLines(inputsFile);
 
-        RunDay(day, input, lines);
-    }
-
-    private static void RunDay(int day, string input, string[] lines)
-    {
+        // get class for given day
         Type? type = Type.GetType($"AocRunner.Day{day}");
-        
-        if (type == null) 
-        { 
-            Console.WriteLine($"No class found with name Day{day}"); 
-            return;
-        }
-        
+        if (type == null) return LogAndExit($"No class found with name Day{day}");
+
+
+        // get run method
         MethodInfo? method = type.GetMethod("Run", BindingFlags.Static | BindingFlags.Public);
+        if (method == null) return LogAndExit($"No Run method for class with name Day{day}");
 
-        if (method == null) 
-        { 
-            Console.WriteLine($"No Run method for class with name Day{day}"); 
-            return;
-        }
-
+        // fire
         Console.WriteLine($"Running day {day}");
         Console.WriteLine();
         method.Invoke(null, new object[] { input, lines });
+
+        return true;
+
+
+    }
+
+    private static bool PrepDay(int day)
+    {
+        var basePath = Environment.CurrentDirectory;
+        var codePath = Path.Join(basePath, $"Day{day}.cs");
+        var inputPath = Path.Join(basePath.Replace("cs", "inputs"), $"day{day}");
+
+        if (File.Exists(codePath)) LogAndExit($"C# file already exists ({codePath})");
+        if (File.Exists(inputPath)) LogAndExit($"Input file already exists ({inputPath})");
+
+        var code = 
+$@"namespace AocRunner;
+
+public class Day{day}
+{{
+    public static void Run(string input, string[] lines)
+    {{
+
+    }}
+}}";
+        File.WriteAllText(codePath, code);
+        File.CreateText(inputPath).Close();
+
+        System.Console.WriteLine("Created:");
+        System.Console.WriteLine(codePath);
+        System.Console.WriteLine(inputPath);
+
+        return true;
+    }
+
+    static bool LogAndExit(string message)
+    {
+        System.Console.WriteLine(message);
+        return false;
     }
 }
