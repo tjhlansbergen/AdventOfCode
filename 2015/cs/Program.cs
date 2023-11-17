@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace AocRunner;
 
@@ -49,9 +50,22 @@ internal class Program
         if (method == null) return LogAndExit($"No Run method for class with name Day{day}");
 
         // fire
+        System.Console.WriteLine();
+        System.Console.WriteLine("##############################");
         Console.WriteLine($"Running day {day}");
         Console.WriteLine();
+
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         method.Invoke(null, new object[] { input, lines });
+
+        stopwatch.Stop();
+
+        Console.WriteLine();
+        System.Console.WriteLine($"Elapsed Time: {stopwatch.Elapsed}");
+        System.Console.WriteLine("##############################");
+        System.Console.WriteLine();
 
         return true;
 
