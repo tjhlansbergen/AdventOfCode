@@ -2,35 +2,58 @@ namespace AocRunner;
 
 public class Day8
 {
-    private static int _metaCount = 0;
+    private static int _cumulativeMeta = 0;
+    private static int _reader = 0;
     private static int[]? _ints;
 
     public static void Run(string input, string[] lines)
     {
         _ints = input.Split(' ').Select(x => int.Parse(x)).ToArray();
-        ParseNode(0);
-        System.Console.WriteLine($"Part 1: {_metaCount}");
+        var part2 = ParseNode();
+
+        System.Console.WriteLine($"Part 1: {_cumulativeMeta}");
+        System.Console.WriteLine($"Part 2: {part2}");
     }
 
-    public static int ParseNode(int reader)
+    // it works, it's fast, yet I don't like it
+    public static int ParseNode()
     {
-        var kids = _ints![reader];
-        var meta = _ints[reader+1];
+        var kidCount = _ints![_reader];
+        var metaCount = _ints[_reader+1];
+        var value = 0;
 
-        reader += 2;
+        _reader += 2;
 
-        for (int r = 0; r < kids; r++)
+        var kidValues = new List<int>();
+        for (int r = 0; r < kidCount; r++)
         {
-            reader = ParseNode(reader);
+            kidValues.Add(ParseNode());
         }
 
-        for (int m = 0; m < meta; m++)
+        var metas = new List<int>();
+        for (int m = 0; m < metaCount; m++)
         {
-            _metaCount += _ints[reader];
-            reader++;
+            metas.Add(_ints[_reader]);
+            _reader++;
         }
 
-        return reader;
+        foreach (var meta in metas)
+        {
+            _cumulativeMeta += meta;
+
+            if (kidCount == 0) 
+            {
+                value += meta;
+            }
+            else
+            {
+                if (meta != 0 && meta <= kidValues.Count)
+                {
+                    value += kidValues[meta-1];
+                }
+            }
+        }
+
+        return value;
     }
-
 }
