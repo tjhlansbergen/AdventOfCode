@@ -53,15 +53,16 @@ public class Day9
 
     public static void Run(string input, string[] lines)
     {
-        RunOne(input);
+        System.Console.WriteLine($"Part 1: {RunOne(input, 1)}"); 
+        System.Console.WriteLine($"Part 2: {RunOne(input, 100)}"); 
     }
 
-    private static void RunOne(string input)
+    private static long RunOne(string input, int multiplyer)
     {
         var splits = input.Split(' ');
-        var rounds = int.Parse(splits[6].Trim());
+        var rounds = int.Parse(splits[6].Trim()) * multiplyer;
         var playerCount = int.Parse(splits[0].Trim());
-        var players = Enumerable.Range(1, playerCount).ToDictionary(k => k, v => 0);
+        var players = Enumerable.Range(1, playerCount).ToDictionary(k => k, v => (long)0);
         var circle = new Circle();
 
         for (int i = 1; i <= rounds; i++)
@@ -69,6 +70,6 @@ public class Day9
             players[((i-1) % playerCount) + 1] += circle.Insert(i);
         }
 
-        System.Console.WriteLine(players.Values.Max());
+        return players.Values.Max();
     }
 }
