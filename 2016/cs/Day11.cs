@@ -7,6 +7,19 @@ public class Day11
         var floors = Enumerable.Range(0, lines.Length).Select(i => new {Number = i+1, Floor = ParseLine(lines[i]) }).ToDictionary(x => x.Number, x => x.Floor);
         var container = new Container { Elevator = new Elevator(), Floors = floors };
         PrintContainer(container);
+
+        // microchips may not be together with generators other than their own
+
+        // get possible moves
+        // pick move that get the most stuff 'up' 
+        // continue until everything is on floor 4
+
+
+    }
+
+    private static void GetMoves(Container container)
+    {
+
     }
 
     public class Unit
