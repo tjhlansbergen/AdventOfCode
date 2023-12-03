@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.Dynamic;
-
 namespace AocRunner;
 
 public class Day2
