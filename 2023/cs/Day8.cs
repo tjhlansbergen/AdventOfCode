@@ -56,9 +56,9 @@ public class Day8
     // https://stackoverflow.com/questions/147515/least-common-multiple-for-3-or-more-numbers/29717490#29717490
     private static long LCM(long[] numbers)
     {
-        return numbers.Aggregate(lcm);
+        return numbers.Aggregate(LCM);
     }
-    private static long lcm(long a, long b)
+    private static long LCM(long a, long b)
     {
         return Math.Abs(a * b) / GCD(a, b);
     }
