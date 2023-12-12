@@ -50,15 +50,22 @@ public class Day7
 
     public static void Run(string input, string[] lines)
     {
-        var test = ScoreHand(new Hand { Cards = "23284"});
-
         var hands = lines.Select(ParseLine);
 
         var ordered = hands.OrderBy(h => h);
 
-        var part1 = ordered.Select((hand, i) => (i+1) * hand.Bid).Sum();;
+        foreach (var hand in ordered)
+        {
+            if (hand.Cards.Any(c => c == 'J'))
+            {
+                System.Console.WriteLine($"{hand.Cards}\t{ScoreHand(hand)}");
+            }
+        }
 
-        System.Console.WriteLine($"Part 1: {part1}");
+        var part2 = ordered.Select((hand, i) => (i+1) * hand.Bid).Sum();
+
+        System.Console.WriteLine();
+        System.Console.WriteLine($"Part 2: {part2}");
 
     }
 
@@ -69,29 +76,47 @@ public class Day7
 
     private static int ScoreHand(Hand hand)
     {
-        
-        // 6 = Five of a kind
-        if (hand.Cards.Distinct().Count() == 1) 
-        {
-            return 6;
-        }
-
+        var jCount = hand.Cards.Count(c => c == 'J');
         var groups = hand.Cards.GroupBy(c => c);
         
-        // 5 = Four of a kind
-        if (groups.Any(gr => gr.Count() == 4)) 
+        // 6 = Five of a kind
+        if (jCount > 0)
         {
-            return 5;
+            if (groups.Where(gr => gr.Key != 'J').Any(gr => gr.Count() == 5 - jCount)) return 6;
         }
+        if (groups.Any(gr => gr.Count() == 5)) return 6;
         
+        // 5 = Four of a kind
+        if (jCount > 0)
+        {
+            if (groups.Where(gr => gr.Key != 'J').Any(gr => gr.Count() == 4 - jCount)) return 5;
+        }
+        if (groups.Any(gr => gr.Count() == 4)) return 5;
+
         // 4 = Full House
+        if (jCount == 3)
+        {
+            return 4;
+        }
+
+        if (jCount == 2)
+        {
+            if (groups.Where(gr => gr.Key != 'J').Any(gr => gr.Count() >= 2)) return 4;
+        }
+
+        if (jCount == 1)
+        {
+            if (groups.Count() == 3) return 4;
+            if (groups.Any(gr => gr.Count() == 3)) return 4;
+        }
+
         if (groups.Any(gr => gr.Count() == 3) && groups.Any(gr => gr.Count() == 2)) 
         {
             return 4;
         }
 
         // 3 = Three of a kind
-        if (groups.Any(gr => gr.Count() == 3)) 
+        if (groups.Any(gr => gr.Count() >= 3 - jCount)) 
         {
             return 3;
         }
@@ -103,7 +128,13 @@ public class Day7
         }
 
         // 1 = one pair
-        if (hand.Cards.Distinct().Count() == 4) 
+
+        if (jCount == 1)
+        {
+            return 1;
+        }
+
+        if (groups.Any(gr => gr.Count() == 2)) 
         {
             return 1;
         }
