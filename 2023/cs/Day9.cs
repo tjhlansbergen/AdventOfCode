@@ -4,20 +4,17 @@ public class Day9
 {
     public static void Run(string input, string[] lines)
     {
-        var part1 = lines.Select(line => line.Split(' ').Select(i => int.Parse(i)).ToArray())
-             .Select(line => SolveLine(line))
-             .Sum();
+        var solves = lines.Select(line => line.Split(' ').Select(int.Parse).ToArray())
+                          .Select(line => SolveLine(line));
 
+        var part1 = solves.Select(s => s.Item2).Sum();
         System.Console.WriteLine($"Part 1: {part1}");
 
-        var part2 = lines.Select(line => line.Split(' ').Select(i => int.Parse(i)).ToArray())
-             .Select(line => SolveLine(line, left: true))
-             .Sum();
-
+        var part2 = solves.Select(s => s.Item1).Sum();
         System.Console.WriteLine($"Part 2: {part2}");
     }
 
-    private static int SolveLine(int[] line, bool left = false)
+    private static (int, int) SolveLine(int[] line)
     {
         var firsts = new List<int>();
         var lasts = new List<int>();
@@ -37,11 +34,6 @@ public class Day9
             line = next.ToArray();
         }
 
-        if (left)
-        {
-            return Enumerable.Reverse(firsts).Aggregate((a,b) => b-a);
-        }
-
-        return lasts.Sum();
+        return (Enumerable.Reverse(firsts).Aggregate((a,b) => b-a), lasts.Sum());
     }
 }
