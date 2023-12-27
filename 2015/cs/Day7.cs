@@ -14,12 +14,12 @@ namespace Runner
 
         public class Gate
         {
-            public string[] IN { get; set; }
-            public string OUT { get; set; }
+            public string[]? IN { get; set; }
+            public string? OUT { get; set; }
             public Method Method { get; set; }
         }
 
-        private static IEnumerable<Gate> _gates;
+        private static IEnumerable<Gate>? _gates;
         private static Dictionary<string, string> _wires = new Dictionary<string, string>();
 
         internal static void Run()
@@ -53,33 +53,33 @@ namespace Runner
             if (int.TryParse(wire, out _)) return wire;
 
             // get the gate
-            var gate = _gates.Single(g => g.OUT == wire);
+            var gate = _gates!.Single(g => g.OUT == wire);
             var result = string.Empty;
 
             switch (gate.Method)
             {
                 case Method.NONE:
-                    result = Get(gate.IN[0]);
+                    result = Get(gate.IN![0]);
                     break;
                 case Method.NOT:
-                    result = ((ushort)~ushort.Parse(Get(gate.IN[0]))).ToString();
+                    result = ((ushort)~ushort.Parse(Get(gate.IN![0]))).ToString();
                     break;
                 case Method.AND:
-                    result = (int.Parse(Get(gate.IN[0])) & 
+                    result = (int.Parse(Get(gate.IN![0])) & 
                             int.Parse(Get(gate.IN[1])))
                             .ToString();
                     break;
                 case Method.OR:
-                    result = (int.Parse(Get(gate.IN[0])) | 
+                    result = (int.Parse(Get(gate.IN![0])) | 
                             int.Parse(Get(gate.IN[1])))
                             .ToString();
                     break;
                 case Method.LSHIFT:
-                    result = (int.Parse(Get(gate.IN[0])) << int.Parse(gate.IN[1]))
+                    result = (int.Parse(Get(gate.IN![0])) << int.Parse(gate.IN[1]))
                             .ToString();
                     break;
                 case Method.RSHIFT:
-                    result = (int.Parse(Get(gate.IN[0])) >> int.Parse(gate.IN[1]))
+                    result = (int.Parse(Get(gate.IN![0])) >> int.Parse(gate.IN[1]))
                             .ToString();
                     break;
                 default:

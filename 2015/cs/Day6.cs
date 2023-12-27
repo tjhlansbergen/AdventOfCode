@@ -4,9 +4,9 @@ namespace Runner
     {
         public class Move
         {
-            public string Action { get; set; }
-            public Tuple<int, int> From { get; set; }
-            public Tuple<int, int> To { get; set; }
+            public string? Action { get; set; }
+            public Tuple<int, int>? From { get; set; }
+            public Tuple<int, int>? To { get; set; }
         }
 
         internal static void Run()
@@ -45,7 +45,7 @@ namespace Runner
                 System.Console.WriteLine($"{count} {move.Action}");
 
 
-                for (int y = move.From.Item2; y <= move.To.Item2; y++)
+                for (int y = move.From!.Item2; y <= move.To!.Item2; y++)
                 {
                     for (int x = move.From.Item1; x <= move.To.Item1; x++)
                     {

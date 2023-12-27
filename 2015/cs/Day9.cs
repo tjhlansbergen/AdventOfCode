@@ -22,7 +22,7 @@ namespace Runner
 
             public void Add(string a, string b, int distance)
             {
-                Node nodea = null, nodeb = null;
+                Node? nodea = null, nodeb = null;
 
                 if (Nodes.Any(n => n.Name == a))
                 {
@@ -135,7 +135,7 @@ namespace Runner
             {
 
                 visited.Remove(node);
-                visited.Remove(prevNode);
+                visited.Remove(prevNode!);
 
                 if (log) System.Console.WriteLine(cost);
                 if (cost > _finalCost) _finalCost = cost;

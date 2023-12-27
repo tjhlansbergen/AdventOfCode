@@ -24,7 +24,7 @@ public class Day13
         var existingPersons = new List<Person>(persons.All);
         foreach (var p in existingPersons)
         {
-            persons.AddOrUpdate("me", p.Name, 0);
+            persons.AddOrUpdate("me", p.Name!, 0);
         }
         var me = persons.All.Single(p => p.Name == "me");
         foreach (var p in persons.All)
