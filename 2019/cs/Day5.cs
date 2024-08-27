@@ -6,8 +6,8 @@ public class Day5
     public static void Run(string input, string[] lines)
     {
         var intcode = input.Split(',').Select(c => int.Parse(c)).ToList();
-        var machine = new Machine(intcode, new Queue<int>([1]));
-        
+        var machine = new Machine(intcode, new Queue<int>([5]));
+
         var result = machine.Process();
     }
 }
@@ -63,9 +63,45 @@ public class Machine
                     outputs.Add(output);
                     progress = 2;
                     break;
+                case 5:
+                    if (GetParameter(0, mode) != 0)
+                    {
+                        _position = GetParameter(1, mode);
+                        progress = 0;
+                    } 
+                    else
+                    {
+                        progress = 3;
+                    }
+                    break;
+                case 6:
+                    if (GetParameter(0, mode) == 0)
+                    {
+                        _position = GetParameter(1, mode);
+                        progress = 0;
+                    } 
+                    else
+                    {
+                        progress = 3;
+                    }
+                    break;
+                case 7:
+                    _intcode[_intcode[_position + 3]] = GetParameter(0, mode) < GetParameter(1, mode)
+                        ? 1
+                        : 0;
+                    progress = 4;
+                    break;
+                case 8:
+                    _intcode[_intcode[_position + 3]] = GetParameter(0, mode) == GetParameter(1, mode)
+                        ? 1
+                        : 0;
+                    progress = 4;
+                    break;
                 default:
                     throw new ArgumentException("Unknown opcode");
             }
+
+            //System.Console.WriteLine(string.Join(',', _intcode));
 
             _position += progress;
         }
