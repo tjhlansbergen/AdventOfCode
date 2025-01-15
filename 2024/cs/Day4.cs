@@ -24,7 +24,7 @@ public class Day4
             }
         }
 
-        Console.WriteLine(count);
+        Console.WriteLine($"Part 1: {count}");
 
     }
 
