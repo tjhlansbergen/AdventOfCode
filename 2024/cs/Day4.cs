@@ -26,6 +26,38 @@ public class Day4
 
         Console.WriteLine($"Part 1: {count}");
 
+        count = 0;
+        for (int y = 0; y < lines.Length; y++)
+        {
+            for (int x = 0; x < lines[y].Length; x++)
+            {
+                if (ProofMas(lines, x, y))
+                {
+                    count++;
+                }
+            }
+        }
+
+        Console.WriteLine($"Part 2: {count}");
+
+    }
+
+    public static bool ProofMas(string[] lines, int x, int y)
+    {
+        if (lines[y][x] != 'A')
+        {
+            return false;
+        }
+
+        var lt = ReadOrDefault(x - 1, y - 1, lines);
+        var rt = ReadOrDefault(x + 1, y - 1, lines);
+        var lb = ReadOrDefault(x - 1, y + 1, lines);
+        var rb = ReadOrDefault(x + 1, y + 1, lines);
+
+        var a = lt == 'M' && rb == 'S' || lt == 'S' && rb == 'M';
+        var b = rt == 'M' && lb == 'S' || rt == 'S' && lb == 'M';
+
+        return a && b;
     }
 
     public static int ReadAll(int x, int y, string[] lines)
