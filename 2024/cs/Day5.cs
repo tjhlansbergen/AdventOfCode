@@ -13,7 +13,31 @@ public class Day5
 
         var part1 = goodUpdates.Sum(u => u.ToArray()[u.Count() / 2]);
         Console.WriteLine($"Part1: {part1}");
-    }
+
+        var badUpdates = updates.Where(u => rules.Any(r => !ProofRule(r, u)));
+        var correctedUpdates = new List<IEnumerable<int>>();
+
+        foreach (var badUpdate in badUpdates)
+        {
+            var correctedUpdate = badUpdate;
+            
+            do {
+                foreach (var rule in rules)
+                {
+                    if (!ProofRule(rule, correctedUpdate))
+                    {
+                        correctedUpdate = ApplyRule(correctedUpdate, rule);
+                        break;
+                    }
+                }
+            } while (rules.Any(r => !ProofRule(r, correctedUpdate)));
+
+            correctedUpdates.Add(correctedUpdate);
+        }
+
+        var part2 = correctedUpdates.Sum(u => u.ToArray()[u.Count() / 2]);
+        Console.WriteLine($"Part2: {part2}");
+    }   
 
     private static bool ProofRule(IEnumerable<int> rule, IEnumerable<int> update)
     {
@@ -32,5 +56,18 @@ public class Day5
         }
 
         return false;
+    }
+
+    private static IEnumerable<int> ApplyRule(IEnumerable<int> update, IEnumerable<int> rule)
+    {
+        var updateList = update.ToList();
+        
+        var pageToMove = updateList.IndexOf(rule.First());
+        var page = updateList[pageToMove];
+
+        updateList.RemoveAt(pageToMove);
+        updateList.Insert(updateList.IndexOf(rule.Last()), page);
+
+        return updateList;
     }
 }
