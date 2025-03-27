@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace AocRunner;
 
 public class Day6
@@ -18,22 +20,79 @@ public class Day6
     {
         var width = lines[0].Length;
         var height = lines.Length;
+        var start = FindStart(lines);
 
-        var position = FindStart(lines);
+        var part1 = Looped(lines, start.X, start.Y).Item2;
+        Console.WriteLine($"Part 1: {part1}");
+
+
+        var countLooped = 0;
+
+        for (var y = 0; y < height; y++)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                if (lines[y][x] == '.')
+                {
+                    var newLines = lines.ToArray();
+                    var sb = new StringBuilder(newLines[y]);
+                    sb[x] = '#'; // Directly modify the character
+                    newLines[y] = sb.ToString(); // Update the list with the modified string
+
+                    if (Looped(newLines, start.X, start.Y).Item1)
+                    {
+                        countLooped++;
+                    }
+                }
+            }
+        }
+
+        Console.WriteLine($"Part 2: {countLooped}");
+    }
+
+    private static void Print(string[] lines)
+    {
+        Console.WriteLine();
+        foreach (var line in lines)
+        {
+            Console.WriteLine(line);
+        }
+        Console.WriteLine();
+    }
+
+    private static (bool, int) Looped(string[] lines, int startX, int startY)
+    {
+        var width = lines[0].Length;
+        var height = lines.Length;
+        
+
+        var position = new Coordinate(startX, startY);
         var direction = new Coordinate(0, -1); // north
-        var visited = new List<Coordinate>();
+        var visited = new Dictionary<Coordinate, Coordinate>();
 
         while (true)
         {
-            visited.Add(new Coordinate(position.X, position.Y));
-
+            if (visited.TryGetValue(position, out Coordinate? value))
+            {
+                if (value == direction)
+                {
+                    // looped
+                    return (true, -1);
+                }
+            }
+            else
+            {
+                // mark as visited
+                visited.Add(new Coordinate(position.X, position.Y), new Coordinate(direction.X, direction.Y)); 
+            }
+            
             // move
             position.X += direction.X;
             position.Y += direction.Y;
 
             if (!Inbounds(position, width, height))
             {
-                break;
+                return (false, visited.Count);
             }
 
             if (lines[position.Y][position.X] == '#')
@@ -46,9 +105,6 @@ public class Day6
                 direction = Rotate(direction);
             }
         }
-
-        var part1 = visited.Distinct().Count();
-        Console.WriteLine($"Part 1: {part1}");
     }
 
     private static bool Inbounds(Coordinate position, int width, int height)
