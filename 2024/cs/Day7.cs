@@ -7,9 +7,13 @@ public class Day7
         // part 1
         var part1 = lines.Select(l => Proof(l)).Sum();
         Console.WriteLine("Part 1: " + part1);
+
+        // part 2
+        var part2 = lines.Select(l => Proof(l, true)).Sum();
+        Console.WriteLine("Part 2: " + part2);
     }
 
-    public static long Proof(string input)
+    public static long Proof(string input, bool part2 = false)
     {
         var target = Parse(input).Item1;
         var numbers = Parse(input).Item2;
@@ -35,6 +39,15 @@ public class Day7
                 if (product <= target)
                 {
                     next.Add(product);
+                }
+
+                if (part2)
+                {
+                    var concat = long.Parse(intermediate.ToString() + numbers[i].ToString());
+                    if (concat <= target)
+                    {
+                        next.Add(concat);
+                    }
                 }
             }
 
