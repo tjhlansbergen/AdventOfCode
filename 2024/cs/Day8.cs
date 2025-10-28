@@ -43,44 +43,24 @@ public class Day8
     {
         var result = new HashSet<Point>();
 
-        foreach (var node in grid)
+        // Group by value and generate unique pairs within each group
+        var pairs = grid
+            .GroupBy(kvp => kvp.Value)
+            .SelectMany(group => 
+                group.Select((first, i) => 
+                    group.Skip(i + 1).Select(second => new { First = first, Second = second }))
+                .SelectMany(x => x));
+
+        foreach (var pair in pairs)
         {
-            var siblings = grid.Where(g => g.Key != node.Key && g.Value == node.Value);
-            foreach (var other in siblings)
-            {
-                var xx = Math.Abs(node.Key.X - other.Key.X);
-                var yy = Math.Abs(node.Key.Y - other.Key.Y);
+            var dx = pair.First.Key.X - pair.Second.Key.X;
+            var dy = pair.First.Key.Y - pair.Second.Key.Y;
 
-                var xn = node.Key.X;
-                var yn = node.Key.Y;
-                var xo = other.Key.X;
-                var yo = other.Key.Y;
+            var antinode1 = new Point(pair.First.Key.X + dx, pair.First.Key.Y + dy);
+            var antinode2 = new Point(pair.Second.Key.X - dx, pair.Second.Key.Y - dy);
 
-                if (node.Key.X > other.Key.X)
-                {
-                    xn = node.Key.X + xx;
-                    xo = other.Key.X - xx;    
-                }
-                else if (node.Key.X < other.Key.X)
-                {
-                    xn = node.Key.X - xx; 
-                    xo = other.Key.X + xx; 
-                }
-
-                if (node.Key.Y > other.Key.Y)
-                {
-                    yn = node.Key.Y + yy; 
-                    yo = other.Key.Y - yy;   
-                }
-                else if (node.Key.Y < other.Key.Y)
-                {
-                    yn = node.Key.Y - yy; 
-                    yo = other.Key.Y + yy; 
-                }
-
-                result.Add(new Point(xn,yn));
-                result.Add(new Point(xo, yo));
-            }
+            result.Add(antinode1);
+            result.Add(antinode2);
         }
 
         return result;
