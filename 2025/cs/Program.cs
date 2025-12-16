@@ -34,7 +34,7 @@ internal class Program
     private static bool RunDay(int day)
     {
         // get input
-        var inputsFile = $"../inputs/day{day}";
+        var inputsFile = Path.Combine("..", "inputs", $"day{day}");
         if (!File.Exists(inputsFile)) return LogAndExit($"Input file for day {day} not found (at {inputsFile})");
 
         var input = File.ReadAllText(inputsFile);
